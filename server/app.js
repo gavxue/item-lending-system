@@ -1,11 +1,14 @@
 const express = require('express')
 const sqlite3 = require('sqlite3').verbose()
+const cors = require('cors')
+
 const loan = require('./routes/loan')
 const returnItem = require('./routes/return')
 const admin = require('./routes/admin')
 
 const app = express()
 
+app.use(cors())
 app.use('/loan', loan)
 app.use('/return', returnItem)
 app.use('/admin', admin)
@@ -24,7 +27,7 @@ app.get('/', (req, res) => {
 
     db.close()
 
-    res.send('hello world')
+    res.json({ message: 'hello world' })
 })
 
 app.listen('3000', () => {
