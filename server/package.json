@@ -10,8 +10,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.1",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "morgan": "^1.10.0",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "supabase": "^1.187.10"
   }
 }
