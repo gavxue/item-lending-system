@@ -10,41 +10,20 @@ app.use('/loan', loan)
 app.use('/return', returnItem)
 app.use('/admin', admin)
 
-// let db = new sqlite3.Database('./db/item-loan.db', sqlite3.OPEN_READWRITE, (err) => {
-//     if (err) {
-//         console.log(err.message)
-//     }
-//     console.log('Connected to database')
-// })
-
-// db.all('select * from log', [], (err, rows) => {
-//     if (err) {
-//         throw err;
-//     }
-//     rows.forEach((row) => {
-//         console.log(row)
-//     })
-// })
-
-// db.serialize(() => {
-//     db.each(`SELECT PlaylistId as id,
-//                     Name as name
-//              FROM playlists`, (err, row) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//       console.log(row.id + "\t" + row.name);
-//     });
-//   });
-
-// db.close((err) => {
-//     if (err) {
-//         console.log(err.message)
-//     }
-//     console.log('Closed database connection')
-// })
-
 app.get('/', (req, res) => {
+    let db = new sqlite3.Database('./db/item-loan.db')
+
+    db.all('SELECT * FROM log', [], (err, rows) => {
+        if (err) {
+            console.log(err.message)
+        }
+        rows.forEach((row) => {
+            console.log(row)
+        })
+    })
+
+    db.close()
+
     res.send('hello world')
 })
 
