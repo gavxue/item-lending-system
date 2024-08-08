@@ -23,14 +23,14 @@ app.use('/admin', admin)
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
 app.get('/', async (req, res) => {
-    const { data, error } = await supabase
-        .from('log')
-        .insert({item: 'darwg', name: 'test', email: 'feawntr', date_loan: '2024-08-08 14:23:35', date_return: '2024-08-08 14:23:35'})
-        .select()
-    if (error) {
-        console.log(error)
-    }
-    console.log(data)
+    // const { data, error } = await supabase
+    //     .from('log')
+    //     .insert({item: 'darwg', name: 'test', email: 'feawntr', date_loan: '2024-08-08 14:23:35', date_return: '2024-08-08 14:23:35'})
+    //     .select()
+    // if (error) {
+    //     console.log(error)
+    // }
+    // console.log(data)
     res.json({ message: 'hello world' })
 })
 

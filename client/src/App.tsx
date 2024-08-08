@@ -1,19 +1,30 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Home from './pages/Home'
+import Admin from './pages/Admin'
+import NotFound from './pages/NotFound'
+
+// import { useEffect, useState } from 'react'
+// import axios from 'axios'
 
 function App() {
-  const [message, setMessage] = useState('')
+  // const [message, setMessage] = useState('')
 
-  useEffect(() => {
-    axios.get('http://localhost:3000')
-      .then(res => setMessage(res.data.message))
-      .catch(err => console.log(err))
-  }, [])
+  // useEffect(() => {
+  //   axios.get('http://localhost:3000')
+  //     .then(res => setMessage(res.data.message))
+  //     .catch(err => console.log(err))
+  // }, [])
 
   return (
-    <div>
-      <h1>{message}</h1>
-    </div>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/admin' element={<Admin />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </>
   )
 }
 
