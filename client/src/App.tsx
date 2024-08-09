@@ -3,6 +3,8 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
+import Loan from './pages/Loan'
+import Return from './pages/Return'
 
 // import { useEffect, useState } from 'react'
 // import axios from 'axios'
@@ -21,6 +23,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/loan' element={<Loan />} />
+        <Route path='/return' element={<Return />} />
         <Route path='/admin' element={<Admin />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
