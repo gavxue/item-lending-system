@@ -1,22 +1,25 @@
 const express = require('express')
 const router = express.Router()
-const sqlite3 = require('sqlite3').verbose()
+const { createClient } = require('@supabase/supabase-js')
+const timestamp = require('time-stamp')
 
 router.get('/', (req, res) => {
     res.send('loan page')
 })
 
-router.post('/', (req, res) => {
-    let db = new sqlite3.Database('./db/item-loan.db')
+router.post('/', async (req, res) => {
+    const { name, email, item } = req.body
 
-    db.run("INSERT INTO log VALUES (1, 'test', 'Tom', 'tom@gmail.com', 'today', 'n/a');", [], (err) => {
-        if (err) {
-            console.log(err.message)
-        }
-        console.log('row added')
-    })
+    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
-    db.close()
+    const { data, error } = await supabase
+        .from('log')
+        .insert({item: item, name: name, email: email, date_loan: timestamp('YYYY-MM-DD HH:mm:ss')})
+        .select()
+    if (error) {
+        console.log(error)
+    }
+    console.log(data)
 
     res.send('Query added')
 })
