@@ -22,6 +22,7 @@ export default function Loan() {
 
     return (
         <main className="container">
+            <h1>Loan Items</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label for="name" className="form-label">Name</label>
