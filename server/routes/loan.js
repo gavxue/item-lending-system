@@ -14,12 +14,20 @@ router.post('/', async (req, res) => {
 
     const { data, error } = await supabase
         .from('log')
-        .insert({item: item, name: name, email: email, date_loan: timestamp('YYYY-MM-DD HH:mm:ss')})
+        .insert({ item: item, name: name, email: email, date_loan: timestamp('YYYY-MM-DD HH:mm:ss') })
         .select()
     if (error) {
         console.log(error)
     }
-    console.log(data)
+
+    const { data1, error1 } = await supabase
+        .from('current')
+        .insert({ ref: data[0].id })
+        .select()
+    if (error1) {
+        console.log(error1)
+    }
+    // console.log(data1)
 
     res.send('Query added')
 })
