@@ -12,7 +12,10 @@ export default function Navbar() {
                             <a className="nav-link" aria-current="page" href="/">Home</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/admin">Admin</a>
+                            <a className="nav-link" href="/loan">Loan</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="/return">Return</a>
                         </li>
                     </ul>
                 </div>

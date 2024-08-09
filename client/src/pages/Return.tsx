@@ -19,7 +19,7 @@ export default function Return() {
     }
 
     return (
-        <main className="container">
+        <>
             <h1>Return Items</h1>
             {data &&
                 <table className="table text-center">
@@ -45,6 +45,6 @@ export default function Return() {
                     </tbody>
                 </table>
             }
-        </main>
+        </>
     )
 }
