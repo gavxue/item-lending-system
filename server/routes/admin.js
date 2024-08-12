@@ -1,22 +1,26 @@
 const express = require('express')
 const router = express.Router()
+const { createClient } = require('@supabase/supabase-js')
+const timestamp = require('time-stamp')
 
-router.get('/', (req, res) => {
-    
-    // let db = new sqlite3.Database('./db/item-loan.db')
+router.get('/', async (req, res) => {
+    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
-    // db.all('SELECT * FROM log', [], (err, rows) => {
-    //     if (err) {
-    //         console.log(err.message)
-    //     }
-    //     rows.forEach((row) => {
-    //         console.log(row)
-    //     })
-    // })
+    // const res_curr = await supabase
+    //     .from('current')
+    //     .select()
+    // if (res_curr.error) console.log(res_curr.error)
 
-    // db.close()
+    // const ref = []
+    // res_curr.data.forEach((x) => ref.push(x.ref))
 
-    // res.send('admin page')
+    const { data, error } = await supabase
+        .from('log')
+        .select()
+        .order('id', { ascending: false })
+    if (error) console.log(error)
+
+    res.send(data)
 })
 
 module.exports = router

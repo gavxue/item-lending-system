@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
     const { data, error } = await supabase
         .from('log')
-        .insert({ item: item, name: name, email: email, date_loan: timestamp('YYYY-MM-DD HH:mm:ss') })
+        .insert({ item: item, name: name, email: email, date_loan: timestamp('YYYY-MM-DD') })
         .select()
     if (error) {
         console.log(error)

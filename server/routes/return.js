@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
 
     const res_log = await supabase
         .from('log')
-        .update({ date_return: timestamp('YYYY-MM-DD HH:mm:ss') })
+        .update({ date_return: timestamp('YYYY-MM-DD') })
         .eq('id', id)
     if (res_log.error) console.log(res_log.error)
 
