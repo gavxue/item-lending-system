@@ -28,7 +28,7 @@ export default function Loan() {
 
     return (
         <section className="w-50 m-auto">
-            <h1>Loan Items</h1>
+            <h1>Loan Item</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>

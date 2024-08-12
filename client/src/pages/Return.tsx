@@ -28,7 +28,7 @@ export default function Return() {
 
     return (
         <>
-            <h1>Return Items</h1>
+            <h1>Return Item</h1>
             {data &&
                 <table className="table text-center">
                     <thead>

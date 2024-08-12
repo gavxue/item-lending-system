@@ -5,10 +5,6 @@ const timestamp = require('time-stamp')
 
 const { sendEmail } = require('../utils')
 
-// router.get('/', (req, res) => {
-//     res.send('loan page')
-// })
-
 router.post('/', async (req, res) => {
     const { name, email, item } = req.body
     const date = timestamp('YYYY-MM-DD')

@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import Error from '../components/Error'
 import Success from '../components/Success'
+import { CiMail } from "react-icons/ci";
 
 export default function Admin() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
@@ -18,13 +19,12 @@ export default function Admin() {
         fetchData()
     }, [])
 
-    // const handleReturn = async (e, id) => {
-    //     e.preventDefault()
-    //     await axios.post('http://localhost:3000/return', { id: id })
-    //         .then((res) => setStatus({ status: 'success', message: '' }))
-    //         .catch((err) => setStatus({ status: 'error', message: err.message }))
-    //     fetchData()
-    // }
+    const handleReminder = async (e, data) => {
+        e.preventDefault()
+        await axios.post('http://localhost:3000/admin', { ...data })
+            .then((res) => setStatus({ status: 'success', message: 'Message sent.' }))
+            .catch((err) => setStatus({ status: 'error', message: err.message }))
+    }
 
     return (
         <>
@@ -38,7 +38,7 @@ export default function Admin() {
                             <th scope="col">Item</th>
                             <th scope="col">Date Loaned</th>
                             <th scope="col">Date Returned</th>
-                            {/* <th scope="col"></th> */}
+                            <th scope="col">Email Reminder</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,9 +49,12 @@ export default function Admin() {
                                 <th className="fw-normal">{entry.item}</th>
                                 <th className="fw-normal">{entry.date_loan}</th>
                                 <th className="fw-normal">{entry.date_return ? entry.date_return : '-'}</th>
-                                {/* <th>
-                                    <button className="btn btn-primary" onClick={(e) => handleReturn(e, entry.id)}>Return</button>
-                                </th> */}
+                                <th>
+                                    {entry.date_return ? '' : (
+                                        <button className="btn btn-primary" onClick={(e) => handleReminder(e, entry)}>Send</button>
+                                    )}
+
+                                </th>
                             </tr>
                         ))}
                     </tbody>
