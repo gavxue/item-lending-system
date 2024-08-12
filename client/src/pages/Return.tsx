@@ -1,21 +1,29 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import Error from '../components/Error'
+import Success from '../components/Success'
+
 export default function Return() {
+    const [status, setStatus] = useState({ status: 'none', message: '' })
     const [data, setData] = useState()
 
+    const fetchData = async () => {
+        await axios.get('http://localhost:3000/return')
+            .then((res) => setData(res.data))
+            .catch((err) => setStatus({ status: 'error', message: err.message }))
+    }
+
     useEffect(() => {
-        async function fetchData() {
-            await axios.get('http://localhost:3000/return')
-                .then((res) => setData(res.data))
-                .catch((err) => console.log(err))
-        }
         fetchData()
     }, [])
 
-    const handleReturn = (e, id) => {
+    const handleReturn = async (e, id) => {
         e.preventDefault()
-        axios.post('http://localhost:3000/return', { id: id })
+        await axios.post('http://localhost:3000/return', { id: id })
+            .then((res) => setStatus({ status: 'success', message: 'Item returned successfully!' }))
+            .catch((err) => setStatus({ status: 'error', message: err.message }))
+        fetchData()
     }
 
     return (
@@ -45,6 +53,12 @@ export default function Return() {
                     </tbody>
                 </table>
             }
+            {status.status === 'success' && (
+                <Success message={status.message} />
+            )}
+            {status.status === 'error' && (
+                <Error message={status.message} />
+            )}
         </>
     )
 }

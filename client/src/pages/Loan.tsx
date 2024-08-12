@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
+import Success from '../components/Success';
+import Error from '../components/Error';
+
 const schema = yup.object({
     name: yup.string().required(),
     email: yup.string().email().required(),
@@ -11,11 +14,12 @@ const schema = yup.object({
 })
 
 export default function Loan() {
+    const [status, setStatus] = useState({ status: 'none', message: '' })
 
     const onSubmit = async (data) => {
         await axios.post('http://localhost:3000/loan', data)
-            .then((res) => console.log(res.data))
-            .catch((err) => console.log(err))
+            .then((res) => setStatus({ status: 'success', message: 'Itemed signed out successfully!' }))
+            .catch((err) => setStatus({ status: 'error', message: err.message }))
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -55,6 +59,12 @@ export default function Loan() {
                 </div>
                 <input type="submit" className="btn btn-primary" />
             </form>
+            {status.status === 'success' && (
+                <Success message={status.message}/>
+            )}
+            {status.status === 'error' && (
+                <Error message={status.message} />
+            )}
         </section>
     )
 }
