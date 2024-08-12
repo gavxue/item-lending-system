@@ -16,6 +16,7 @@ export default function Home() {
                 <ul>
                     <li>Adapters (USB, HDMI, DVI, VGA, DisplayPort, etc)</li>
                     <li>Keyboards and mice</li>
+                    <li>Monitors</li>
                     <li>HD/CD Readers</li>
                     <li>Portable projectors</li>
                     <li>Power bars</li>

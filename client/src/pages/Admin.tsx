@@ -18,13 +18,13 @@ export default function Admin() {
         fetchData()
     }, [])
 
-    const handleReturn = async (e, id) => {
-        e.preventDefault()
-        await axios.post('http://localhost:3000/return', { id: id })
-            .then((res) => setStatus({ status: 'success', message: '' }))
-            .catch((err) => setStatus({ status: 'error', message: err.message }))
-        fetchData()
-    }
+    // const handleReturn = async (e, id) => {
+    //     e.preventDefault()
+    //     await axios.post('http://localhost:3000/return', { id: id })
+    //         .then((res) => setStatus({ status: 'success', message: '' }))
+    //         .catch((err) => setStatus({ status: 'error', message: err.message }))
+    //     fetchData()
+    // }
 
     return (
         <>
