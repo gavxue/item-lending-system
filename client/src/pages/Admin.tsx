@@ -3,7 +3,6 @@ import axios from 'axios'
 
 import Error from '../components/Error'
 import Success from '../components/Success'
-import { CiMail } from "react-icons/ci";
 
 export default function Admin() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
