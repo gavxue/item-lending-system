@@ -18,6 +18,7 @@ router.get('/', async (req, res) => {
         .from('log')
         .select()
         .in('id', ref)
+        .order('id', { ascending: false })
     if (error) console.log(error)
 
     res.send(data)
