@@ -11,7 +11,10 @@ export default function Admin() {
     const fetchData = async () => {
         await axios.get('http://localhost:3000/admin')
             .then((res) => setData(res.data))
-            .catch((err) => setStatus({ status: 'error', message: err.message }))
+            .catch((err) => {
+                console.log(err)
+                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}.` })
+            })
     }
 
     useEffect(() => {
@@ -21,13 +24,22 @@ export default function Admin() {
     const handleReminder = async (e, data) => {
         e.preventDefault()
         await axios.post('http://localhost:3000/admin', { ...data })
-            .then((res) => setStatus({ status: 'success', message: 'Message sent.' }))
-            .catch((err) => setStatus({ status: 'error', message: err.message }))
+            .then((res) => setStatus({ status: 'success', message: 'Reminder email sent successfully!' }))
+            .catch((err) => {
+                console.log(err)
+                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
+            })
     }
 
     return (
         <>
             <h1>Admin</h1>
+            {status.status === 'success' && (
+                <Success message={status.message} />
+            )}
+            {status.status === 'error' && (
+                <Error message={status.message} />
+            )}
             {data &&
                 <table className="table text-center">
                     <thead>
@@ -59,12 +71,7 @@ export default function Admin() {
                     </tbody>
                 </table>
             }
-            {status.status === 'success' && (
-                <Success message={status.message} />
-            )}
-            {status.status === 'error' && (
-                <Error message={status.message} />
-            )}
+
         </>
     )
 }

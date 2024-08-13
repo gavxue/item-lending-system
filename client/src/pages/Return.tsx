@@ -11,7 +11,10 @@ export default function Return() {
     const fetchData = async () => {
         await axios.get('http://localhost:3000/return')
             .then((res) => setData(res.data))
-            .catch((err) => setStatus({ status: 'error', message: err.message }))
+            .catch((err) => {
+                console.log(err)
+                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
+            })
     }
 
     useEffect(() => {
@@ -21,9 +24,16 @@ export default function Return() {
     const handleReturn = async (e, id) => {
         e.preventDefault()
         await axios.post('http://localhost:3000/return', { id: id })
-            .then((res) => setStatus({ status: 'success', message: 'Item returned successfully!' }))
-            .catch((err) => setStatus({ status: 'error', message: err.message }))
-        fetchData()
+            .then(async (res) => {
+                setStatus({ status: 'success', message: 'Item returned successfully!' })
+                fetchData()
+                return await axios.post('http://localhost:3000/return/email', res.data)
+            })
+            .then((res) => setStatus({ status: 'success', message: 'Confirmation email sent successfully!' }))
+            .catch((err) => {
+                console.log(err)
+                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}.` })
+            })
     }
 
     return (

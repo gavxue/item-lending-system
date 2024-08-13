@@ -18,13 +18,8 @@ function sendEmail(email, subject, body) {
         text: body
     }
 
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(info.response)
-        }
-    })
+    return transporter.sendMail(mailOptions)
+
 }
 
 module.exports = { sendEmail }

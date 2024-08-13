@@ -5,7 +5,7 @@ const timestamp = require('time-stamp')
 
 const { sendEmail } = require('../utils')
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     const { name, email, item } = req.body
     const date = timestamp('YYYY-MM-DD')
 
@@ -17,45 +17,34 @@ router.post('/', async (req, res) => {
         .select()
     if (error) {
         console.log(error)
+        next(`DATABASE ERROR ${error.message}.`)
+        return
     }
 
-    const { data1, error1 } = await supabase
+    const { error: error_curr } = await supabase
         .from('current')
         .insert({ ref: data[0].id })
-        .select()
-    if (error1) {
-        console.log(error1)
+    if (error_curr) {
+        console.log(error_curr)
+        next(`DATABASE ERROR ${error_curr.message}.`)
+        return
     }
-    // console.log(data1)
 
-    sendEmail(email, `Item loaned: ${item}`, `Hello ${name},\n\nThank you for using the CEE IT Item Lending System. This email is to confirm that you signed out the following item on ${date}:\n\n${item}\n\nPlease return the item as soon you are done using it. Thank you.\n\nBest,\nCEE IT`)
+    res.send({ name: name, email: email, item: item, date: date })
+})
 
-    // const transporter = nodemailer.createTransport({
-    //     host: "mailservices.uwaterloo.ca",
-    //     port: 587,
-    //     secure: false,
-    //     auth: {
-    //         user: process.env.EMAIL_USER,
-    //         pass: process.env.EMAIL_PASS
-    //     }
-    // })
+router.post('/email', async (req, res, next) => {
+    const { name, item, email, date } = req.body
 
-    // const mailOptions = {
-    //     from: 'ceecoop1@uwaterloo.ca',
-    //     to: 'g3xue@uwaterloo.ca',
-    //     subject: 'Test email',
-    //     text: 'efawioiorbanoiubraw'
-    // }
+    try {
+        await sendEmail(email, `Item loaned: ${item}`, `Hello ${name},\n\nThank you for using the CEE IT Item Lending System. This email is to confirm that you signed out the following item on ${date}:\n\n${item}\n\nPlease return the item as soon you are done using it. Thank you.\n\nBest,\nCEE IT`)
+    } catch (err) {
+        console.log(err)
+        next(`EMAIL ERROR ${err.response}.`)
+        return
+    }
 
-    // transporter.sendMail(mailOptions, (err, info) => {
-    //     if (err) {
-    //         console.log(err)
-    //     } else {
-    //         console.log(info.response)
-    //     }
-    // })
-
-    res.send('Query added')
+    res.send('OK')
 })
 
 module.exports = router

@@ -18,8 +18,15 @@ export default function Loan() {
 
     const onSubmit = async (data) => {
         await axios.post('http://localhost:3000/loan', data)
-            .then((res) => setStatus({ status: 'success', message: 'Itemed signed out successfully!' }))
-            .catch((err) => setStatus({ status: 'error', message: err.message }))
+            .then(async (res) => {
+                setStatus({ status: 'success', message: 'Itemed signed out successfully!' })
+                return await axios.post('http://localhost:3000/loan/email', res.data)
+            })
+            .then((res) => setStatus({ status: 'success', message: 'Confirmation email sent successfully!' }))
+            .catch((err) => {
+                console.log(err)
+                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
+            })
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -60,7 +67,7 @@ export default function Loan() {
                 <input type="submit" className="btn btn-primary" />
             </form>
             {status.status === 'success' && (
-                <Success message={status.message}/>
+                <Success message={status.message} />
             )}
             {status.status === 'error' && (
                 <Error message={status.message} />

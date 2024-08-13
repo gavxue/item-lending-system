@@ -1,5 +1,4 @@
 const express = require('express')
-const { createClient } = require('@supabase/supabase-js')
 const cors = require('cors')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -19,6 +18,11 @@ app.use(bodyParser.json())
 app.use('/loan', loan)
 app.use('/return', returnItem)
 app.use('/admin', admin)
+
+app.use((err, req, res, next) => {
+    console.log(err)
+    res.status(500).send(err)
+})
 
 app.listen('3000', () => {
     console.log('Listening on port 3000')
