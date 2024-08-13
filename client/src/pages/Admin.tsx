@@ -8,7 +8,7 @@ import Loading from '../components/Loading'
 export default function Admin() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
     const [loading, setLoading] = useState(false)
-    const [data, setData] = useState()
+    const [data, setData] = useState<any[]>()
 
     const fetchData = async () => {
         await axios.get(`${import.meta.env.VITE_API_URL}/admin`)
@@ -23,7 +23,7 @@ export default function Admin() {
         fetchData()
     }, [])
 
-    const handleReminder = async (e, data) => {
+    const handleReminder = async (e: Event, data: any) => {
         e.preventDefault()
         setLoading(true)
         await axios.post(`${import.meta.env.VITE_API_URL}/admin`, { ...data })
@@ -70,7 +70,7 @@ export default function Admin() {
                                 <th className="fw-normal">{entry.date_return ? entry.date_return : '-'}</th>
                                 <th>
                                     {entry.date_return ? '' : (
-                                        <button className="btn btn-primary" onClick={(e) => handleReminder(e, entry)}>Send</button>
+                                        <button className="btn btn-primary" onClick={(e: any) => handleReminder(e, entry)}>Send</button>
                                     )}
                                 </th>
                             </tr>

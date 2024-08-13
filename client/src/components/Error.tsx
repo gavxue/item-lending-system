@@ -1,4 +1,6 @@
-export default function Error({ message, forUser }) {
+import { Alert } from '../../types'
+
+export default function ({ message, forUser }: Alert) {
     return (
         <div className="alert alert-danger my-3 pb-0" role="alert">
             <p className="fw-bold">Error</p>

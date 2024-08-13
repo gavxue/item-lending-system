@@ -8,7 +8,7 @@ import Loading from '../components/Loading'
 export default function Return() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
     const [loading, setLoading] = useState(false)
-    const [data, setData] = useState()
+    const [data, setData] = useState<any[]>()
 
     const fetchData = async () => {
         await axios.get(`${import.meta.env.VITE_API_URL}/return`)
@@ -23,7 +23,7 @@ export default function Return() {
         fetchData()
     }, [])
 
-    const handleReturn = async (e, id) => {
+    const handleReturn = async (e: Event, id: number) => {
         e.preventDefault()
         await axios.post(`${import.meta.env.VITE_API_URL}/return`, { id: id })
             .then(async (res) => {
@@ -63,7 +63,7 @@ export default function Return() {
                                 <th className="fw-normal">{entry.item}</th>
                                 <th className="fw-normal">{entry.date_loan}</th>
                                 <th>
-                                    <button className="btn btn-primary py-0" onClick={(e) => handleReturn(e, entry.id)}>Return</button>
+                                    <button className="btn btn-primary py-0" onClick={(e: any) => handleReturn(e, entry.id)}>Return</button>
                                 </th>
                             </tr>
                         ))}

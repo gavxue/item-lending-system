@@ -18,7 +18,7 @@ export default function Loan() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
     const [loading, setLoading] = useState(false)
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: any) => {
         await axios.post(`${import.meta.env.VITE_API_URL}/loan`, data)
             .then(async (res) => {
                 setLoading(true)
