@@ -3,9 +3,11 @@ import axios from 'axios'
 
 import Error from '../components/Error'
 import Success from '../components/Success'
+import Loading from '../components/Loading'
 
 export default function Return() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
+    const [loading, setLoading] = useState(false)
     const [data, setData] = useState()
 
     const fetchData = async () => {
@@ -25,14 +27,19 @@ export default function Return() {
         e.preventDefault()
         await axios.post('http://localhost:3000/return', { id: id })
             .then(async (res) => {
+                setLoading(true)
                 setStatus({ status: 'success', message: 'Item returned successfully!' })
                 fetchData()
                 return await axios.post('http://localhost:3000/return/email', res.data)
             })
-            .then((res) => setStatus({ status: 'success', message: 'Confirmation email sent successfully!' }))
+            .then((res) => {
+                setLoading(false)
+                setStatus({ status: 'success', message: 'Confirmation email sent successfully!' })
+            })
             .catch((err) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}.` })
+                setLoading(false)
             })
     }
 
@@ -64,11 +71,12 @@ export default function Return() {
                 </table>
             }
             {status.status === 'success' && (
-                <Success message={status.message} />
+                <Success message={status.message} forUser={loading} />
             )}
             {status.status === 'error' && (
-                <Error message={status.message} />
+                <Error message={status.message} forUser={true} />
             )}
+            {loading && <Loading message='Email is sending...' />}
         </>
     )
 }

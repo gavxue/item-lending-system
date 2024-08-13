@@ -3,9 +3,11 @@ import axios from 'axios'
 
 import Error from '../components/Error'
 import Success from '../components/Success'
+import Loading from '../components/Loading'
 
 export default function Admin() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
+    const [loading, setLoading] = useState(false)
     const [data, setData] = useState()
 
     const fetchData = async () => {
@@ -23,11 +25,16 @@ export default function Admin() {
 
     const handleReminder = async (e, data) => {
         e.preventDefault()
+        setLoading(true)
         await axios.post('http://localhost:3000/admin', { ...data })
-            .then((res) => setStatus({ status: 'success', message: 'Reminder email sent successfully!' }))
+            .then((res) => {
+                setStatus({ status: 'success', message: 'Reminder email sent successfully!' })
+                setLoading(false)
+            })
             .catch((err) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
+                setLoading(false)
             })
     }
 
@@ -35,11 +42,12 @@ export default function Admin() {
         <>
             <h1>Admin</h1>
             {status.status === 'success' && (
-                <Success message={status.message} />
+                <Success message={status.message} forUser={false} />
             )}
             {status.status === 'error' && (
-                <Error message={status.message} />
+                <Error message={status.message} forUser={false} />
             )}
+            {loading && <Loading message='Email is sending...' />}
             {data &&
                 <table className="table text-center">
                     <thead>

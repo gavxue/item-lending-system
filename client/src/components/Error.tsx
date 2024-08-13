@@ -1,7 +1,8 @@
-export default function Error({ message }) {
+export default function Error({ message, forUser }) {
     return (
-        <div className="alert alert-danger my-3" role="alert">
+        <div className="alert alert-danger my-3 pb-0" role="alert">
             <p className="fw-bold">Error</p>
+            {forUser && <p>Please contact IT for support.</p>}
             <p>Error message: {message}</p>
         </div>
     )

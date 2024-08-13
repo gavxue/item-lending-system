@@ -6,6 +6,7 @@ import * as yup from "yup";
 
 import Success from '../components/Success';
 import Error from '../components/Error';
+import Loading from '../components/Loading';
 
 const schema = yup.object({
     name: yup.string().required(),
@@ -15,17 +16,23 @@ const schema = yup.object({
 
 export default function Loan() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
+    const [loading, setLoading] = useState(false)
 
     const onSubmit = async (data) => {
         await axios.post('http://localhost:3000/loan', data)
             .then(async (res) => {
+                setLoading(true)
                 setStatus({ status: 'success', message: 'Itemed signed out successfully!' })
                 return await axios.post('http://localhost:3000/loan/email', res.data)
             })
-            .then((res) => setStatus({ status: 'success', message: 'Confirmation email sent successfully!' }))
+            .then((res) => {
+                setLoading(false)
+                setStatus({ status: 'success', message: 'Confirmation email sent successfully!' })
+            })
             .catch((err) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
+                setLoading(false)
             })
     }
 
@@ -67,11 +74,12 @@ export default function Loan() {
                 <input type="submit" className="btn btn-primary" />
             </form>
             {status.status === 'success' && (
-                <Success message={status.message} />
+                <Success message={status.message} forUser={loading} />
             )}
             {status.status === 'error' && (
-                <Error message={status.message} />
+                <Error message={status.message} forUser={true} />
             )}
+            {loading && <Loading message='Email is sending...' />}
         </section>
     )
 }
