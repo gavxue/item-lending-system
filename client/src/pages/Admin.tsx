@@ -11,7 +11,7 @@ export default function Admin() {
     const [data, setData] = useState()
 
     const fetchData = async () => {
-        await axios.get('http://localhost:3000/admin')
+        await axios.get(`${import.meta.env.VITE_API_URL}/admin`)
             .then((res) => setData(res.data))
             .catch((err) => {
                 console.log(err)
@@ -26,7 +26,7 @@ export default function Admin() {
     const handleReminder = async (e, data) => {
         e.preventDefault()
         setLoading(true)
-        await axios.post('http://localhost:3000/admin', { ...data })
+        await axios.post(`${import.meta.env.VITE_API_URL}/admin`, { ...data })
             .then((res) => {
                 setStatus({ status: 'success', message: 'Reminder email sent successfully!' })
                 setLoading(false)
@@ -72,7 +72,6 @@ export default function Admin() {
                                     {entry.date_return ? '' : (
                                         <button className="btn btn-primary" onClick={(e) => handleReminder(e, entry)}>Send</button>
                                     )}
-
                                 </th>
                             </tr>
                         ))}

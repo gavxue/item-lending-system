@@ -19,11 +19,11 @@ export default function Loan() {
     const [loading, setLoading] = useState(false)
 
     const onSubmit = async (data) => {
-        await axios.post('http://localhost:3000/loan', data)
+        await axios.post(`${import.meta.env.VITE_API_URL}/loan`, data)
             .then(async (res) => {
                 setLoading(true)
                 setStatus({ status: 'success', message: 'Itemed signed out successfully!' })
-                return await axios.post('http://localhost:3000/loan/email', res.data)
+                return await axios.post(`${import.meta.env.VITE_API_URL}/loan/email`, res.data)
             })
             .then((res) => {
                 setLoading(false)
@@ -71,7 +71,7 @@ export default function Loan() {
                         </div>
                     )}
                 </div>
-                <input type="submit" className="btn btn-primary" />
+                <input type="submit" className="btn btn-primary" disabled={loading}/>
             </form>
             {status.status === 'success' && (
                 <Success message={status.message} forUser={loading} />

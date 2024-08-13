@@ -11,7 +11,7 @@ export default function Return() {
     const [data, setData] = useState()
 
     const fetchData = async () => {
-        await axios.get('http://localhost:3000/return')
+        await axios.get(`${import.meta.env.VITE_API_URL}/return`)
             .then((res) => setData(res.data))
             .catch((err) => {
                 console.log(err)
@@ -25,12 +25,12 @@ export default function Return() {
 
     const handleReturn = async (e, id) => {
         e.preventDefault()
-        await axios.post('http://localhost:3000/return', { id: id })
+        await axios.post(`${import.meta.env.VITE_API_URL}/return`, { id: id })
             .then(async (res) => {
                 setLoading(true)
                 setStatus({ status: 'success', message: 'Item returned successfully!' })
                 fetchData()
-                return await axios.post('http://localhost:3000/return/email', res.data)
+                return await axios.post(`${import.meta.env.VITE_API_URL}/return/email`, res.data)
             })
             .then((res) => {
                 setLoading(false)
@@ -58,12 +58,12 @@ export default function Return() {
                     </thead>
                     <tbody>
                         {data.map((entry) => (
-                            <tr key={entry.id}>
+                            <tr key={entry.id} >
                                 <th className="fw-normal">{entry.name}</th>
                                 <th className="fw-normal">{entry.item}</th>
                                 <th className="fw-normal">{entry.date_loan}</th>
                                 <th>
-                                    <button className="btn btn-primary" onClick={(e) => handleReturn(e, entry.id)}>Return</button>
+                                    <button className="btn btn-primary py-0" onClick={(e) => handleReturn(e, entry.id)}>Return</button>
                                 </th>
                             </tr>
                         ))}
