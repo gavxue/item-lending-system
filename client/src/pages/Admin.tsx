@@ -41,6 +41,11 @@ export default function Admin() {
     return (
         <>
             <h1>Admin</h1>
+            <div className='my-3'>
+                <a href="https://supabase.com/dashboard/project/mrleaqcuxookdxovglow/editor" className="btn btn-secondary me-3" target="_blank" rel="noopener noreferrer">Database</a>
+                <a href="" className="btn btn-secondary me-3" target="_blank" rel="noopener noreferrer">Documentation (todo)</a>
+                <a href="https://github.com/gavxue/item-lending-system" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">Source code</a>
+            </div>
             {status.status === 'success' && (
                 <Success message={status.message} forUser={false} />
             )}
