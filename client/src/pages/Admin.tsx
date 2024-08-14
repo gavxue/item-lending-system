@@ -7,7 +7,7 @@ import Loading from '../components/Loading'
 
 export default function Admin() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [data, setData] = useState<any[]>()
 
     const fetchData = async () => {
@@ -17,6 +17,7 @@ export default function Admin() {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}.` })
             })
+            .finally(() => setLoading(false))
     }
 
     useEffect(() => {
@@ -29,13 +30,12 @@ export default function Admin() {
         await axios.post(`${import.meta.env.VITE_API_URL}/admin`, { ...data })
             .then((res) => {
                 setStatus({ status: 'success', message: 'Reminder email sent successfully!' })
-                setLoading(false)
             })
             .catch((err) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
-                setLoading(false)
             })
+            .finally(() => setLoading(false))
     }
 
     return (
@@ -47,7 +47,7 @@ export default function Admin() {
             {status.status === 'error' && (
                 <Error message={status.message} forUser={false} />
             )}
-            {loading && <Loading message='Email is sending...' />}
+            {loading && <Loading message={status.message === 'none' ? 'Getting data from database. This can take a minute.' : 'Email is sending...'} />}
             {data &&
                 <table className="table text-center">
                     <thead>

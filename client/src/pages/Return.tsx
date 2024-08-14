@@ -7,16 +7,19 @@ import Loading from '../components/Loading'
 
 export default function Return() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [data, setData] = useState<any[]>()
 
     const fetchData = async () => {
         await axios.get(`${import.meta.env.VITE_API_URL}/return`)
-            .then((res) => setData(res.data))
+            .then((res) => {
+                setData(res.data)
+            })
             .catch((err) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
             })
+            .finally(() => setLoading(false))
     }
 
     useEffect(() => {
@@ -25,22 +28,22 @@ export default function Return() {
 
     const handleReturn = async (e: Event, id: number) => {
         e.preventDefault()
+        setLoading(true)
         await axios.post(`${import.meta.env.VITE_API_URL}/return`, { id: id })
             .then(async (res) => {
-                setLoading(true)
                 setStatus({ status: 'success', message: 'Item returned successfully!' })
                 fetchData()
+                setLoading(true)
                 return await axios.post(`${import.meta.env.VITE_API_URL}/return/email`, res.data)
             })
             .then((res) => {
-                setLoading(false)
                 setStatus({ status: 'success', message: 'Confirmation email sent successfully!' })
             })
             .catch((err) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}.` })
-                setLoading(false)
             })
+            .finally(() => setLoading(false))
     }
 
     return (
@@ -76,7 +79,7 @@ export default function Return() {
             {status.status === 'error' && (
                 <Error message={status.message} forUser={true} />
             )}
-            {loading && <Loading message='Email is sending...' />}
+            {loading && <Loading message={status.message === 'none' ? 'Getting data from database. This can take a minute' : 'Email is sending...'} />}
         </>
     )
 }

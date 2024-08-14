@@ -19,6 +19,7 @@ export default function Loan() {
     const [loading, setLoading] = useState(false)
 
     const onSubmit = async (data: any) => {
+        setLoading(true)
         await axios.post(`${import.meta.env.VITE_API_URL}/loan`, data)
             .then(async (res) => {
                 setLoading(true)
@@ -71,7 +72,7 @@ export default function Loan() {
                         </div>
                     )}
                 </div>
-                <input type="submit" className="btn btn-primary" disabled={loading}/>
+                <input type="submit" className="btn btn-primary" disabled={loading} />
             </form>
             {status.status === 'success' && (
                 <Success message={status.message} forUser={loading} />
@@ -79,7 +80,7 @@ export default function Loan() {
             {status.status === 'error' && (
                 <Error message={status.message} forUser={true} />
             )}
-            {loading && <Loading message='Email is sending...' />}
+            {loading && <Loading message={status.message === 'none' ? 'Processing request. This can take a minute.' : 'Email is sending...'} />}
         </section>
     )
 }
