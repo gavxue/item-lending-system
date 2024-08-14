@@ -19,6 +19,10 @@ app.use('/loan', loan)
 app.use('/return', returnItem)
 app.use('/admin', admin)
 
+app.get('/', (req, res) => {
+    res.send('pinged')
+})
+
 app.use((err, req, res, next) => {
     console.log(err)
     res.status(500).send(err)
