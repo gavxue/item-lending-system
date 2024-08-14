@@ -70,7 +70,7 @@ export default function Admin() {
                                 <th className="fw-normal">{entry.date_return ? entry.date_return : '-'}</th>
                                 <th>
                                     {entry.date_return ? '' : (
-                                        <button className="btn btn-primary" onClick={(e: any) => handleReminder(e, entry)}>Send</button>
+                                        <button className="btn btn-primary py-0" onClick={(e: any) => handleReminder(e, entry)}>Send</button>
                                     )}
                                 </th>
                             </tr>
