@@ -79,7 +79,7 @@ export default function Return() {
             {status.status === 'error' && (
                 <Error message={status.message} forUser={true} />
             )}
-            {loading && <Loading message={status.message === 'none' ? 'Getting data from database. This can take a minute' : 'Email is sending...'} />}
+            {loading && <Loading message={status.status === 'none' ? 'Getting data from database. This can take a minute' : 'Email is sending...'} />}
         </>
     )
 }

@@ -47,7 +47,7 @@ export default function Admin() {
             {status.status === 'error' && (
                 <Error message={status.message} forUser={false} />
             )}
-            {loading && <Loading message={status.message === 'none' ? 'Getting data from database. This can take a minute.' : 'Email is sending...'} />}
+            {loading && <Loading message={status.status === 'none' ? 'Getting data from database. This can take a minute.' : 'Email is sending...'} />}
             {data &&
                 <table className="table text-center">
                     <thead>
