@@ -9,9 +9,10 @@ import Error from '../components/Error';
 import Loading from '../components/Loading';
 
 const schema = yup.object({
-    name: yup.string().required(),
-    email: yup.string().email().required(),
-    item: yup.string().required()
+    name: yup.string().required('Name is a required field.'),
+    email: yup.string().email('Enter a valid email.').test('uwaterloo', 'Enter your uwaterloo email.',
+        (value: string) => value.includes('@uwaterloo.ca')).required('Email is a required field.'),
+    item: yup.string().required('Item is a required field.')
 })
 
 export default function Loan() {

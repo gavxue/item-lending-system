@@ -15,7 +15,7 @@ export default function Admin() {
             .then((res) => setData(res.data))
             .catch((err) => {
                 console.log(err)
-                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}.` })
+                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
             })
             .finally(() => setLoading(false))
     }
