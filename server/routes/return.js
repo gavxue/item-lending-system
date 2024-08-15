@@ -8,22 +8,10 @@ const { sendEmail } = require('../utils')
 router.get('/', async (req, res, next) => {
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
-    const { data: data_curr, error: error_curr } = await supabase
-        .from('current')
-        .select()
-    if (error_curr) {
-        console.log(error_curr)
-        next(`DATABASE ERROR ${error_curr.message}.`)
-        return
-    }
-
-    const ref = []
-    data_curr.forEach((x) => ref.push(x.ref))
-
     const { data, error } = await supabase
         .from('log')
         .select()
-        .in('id', ref)
+        .is('date_return', null)
         .order('id', { ascending: false })
     if (error) {
         console.log(error)

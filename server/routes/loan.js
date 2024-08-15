@@ -11,22 +11,12 @@ router.post('/', async (req, res, next) => {
 
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from('log')
         .insert({ item: item, name: name, email: email, date_loan: date })
-        .select()
     if (error) {
         console.log(error)
         next(`DATABASE ERROR ${error.message}.`)
-        return
-    }
-
-    const { error: error_curr } = await supabase
-        .from('current')
-        .insert({ ref: data[0].id })
-    if (error_curr) {
-        console.log(error_curr)
-        next(`DATABASE ERROR ${error_curr.message}.`)
         return
     }
 

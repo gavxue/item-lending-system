@@ -69,11 +69,11 @@ export default function Admin() {
                     <tbody>
                         {data.map((entry) => (
                             <tr key={entry.id}>
-                                <th className="fw-normal">{entry.name}</th>
-                                <th className="fw-normal">{entry.email}</th>
-                                <th className="fw-normal">{entry.item}</th>
-                                <th className="fw-normal">{entry.date_loan}</th>
-                                <th className="fw-normal">{entry.date_return ? entry.date_return : '-'}</th>
+                                <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.name}</th>
+                                <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.email}</th>
+                                <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.item}</th>
+                                <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.date_loan}</th>
+                                <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.date_return ? entry.date_return : '-'}</th>
                                 <th>
                                     {entry.date_return ? '' : (
                                         <button className="btn btn-primary py-0" onClick={(e: any) => handleReminder(e, entry)}>Send</button>
