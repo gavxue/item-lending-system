@@ -7,17 +7,18 @@ import Loading from '../components/Loading'
 
 export default function Admin() {
     const [status, setStatus] = useState({ status: 'none', message: '' })
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState({ loading: false, message: '' })
     const [data, setData] = useState<any[]>()
 
     const fetchData = async () => {
+        setLoading({ loading: true, message: 'Fetching data...' })
         await axios.get(`${import.meta.env.VITE_API_URL}/admin`)
             .then((res) => setData(res.data))
             .catch((err) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
             })
-            .finally(() => setLoading(false))
+            .finally(() => setLoading({ loading: false, message: '' }))
     }
 
     useEffect(() => {
@@ -26,7 +27,8 @@ export default function Admin() {
 
     const handleReminder = async (e: Event, data: any) => {
         e.preventDefault()
-        setLoading(true)
+        setStatus({ status: 'none', message: '' })
+        setLoading({ loading: true, message: 'Sending reminder email...' })
         await axios.post(`${import.meta.env.VITE_API_URL}/admin`, { ...data })
             .then((res) => {
                 setStatus({ status: 'success', message: 'Reminder email sent successfully!' })
@@ -35,7 +37,7 @@ export default function Admin() {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
             })
-            .finally(() => setLoading(false))
+            .finally(() => setLoading({ loading: false, message: '' }))
     }
 
     return (
@@ -44,7 +46,8 @@ export default function Admin() {
             <div className='my-3'>
                 <a href="https://supabase.com/dashboard/project/mrleaqcuxookdxovglow/editor" className="btn btn-secondary me-3" target="_blank" rel="noopener noreferrer">Database</a>
                 <a href="https://dashboard.render.com/" className="btn btn-secondary me-3" target="_blank" rel="noopener noreferrer">Hosting site</a>
-                <a href="" className="btn btn-secondary me-3" target="_blank" rel="noopener noreferrer">Documentation (todo)</a>
+                <a href="https://uofwaterloo.sharepoint.com/:f:/r/sites/tm-env-cee-it-loan/Shared%20Documents/Small%20Items/Item%20lending%20system%20backups?csf=1&web=1&e=712FYO" className="btn btn-secondary me-3" target="_blank" rel="noopener noreferrer">Backups</a>
+                <a href="https://uwaterloo.atlassian.net/wiki/spaces/CEEIT/pages/44166643784/Item+Lending+System" className="btn btn-secondary me-3" target="_blank" rel="noopener noreferrer">Documentation</a>
                 <a href="https://github.com/gavxue/item-lending-system" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">Source code</a>
             </div>
             {status.status === 'success' && (
@@ -53,7 +56,7 @@ export default function Admin() {
             {status.status === 'error' && (
                 <Error message={status.message} forUser={false} />
             )}
-            {loading && <Loading message={status.status === 'none' ? 'Getting data from database. This can take a minute.' : 'Email is sending...'} />}
+            {loading.loading && <Loading message={loading.message} />}
             {data &&
                 <table className="table text-center">
                     <thead>

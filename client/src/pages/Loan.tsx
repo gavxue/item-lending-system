@@ -16,26 +16,26 @@ const schema = yup.object({
 })
 
 export default function Loan() {
-    const [status, setStatus] = useState({ status: 'none', message: '' })
-    const [loading, setLoading] = useState(false)
+    const [status, setStatus] = useState({ status: 'none', message: '', user: true })
+    const [loading, setLoading] = useState({ loading: false, message: '' })
 
     const onSubmit = async (data: any) => {
-        setLoading(true)
+        setStatus({ status: 'none', message: '', user: true })
+        setLoading({ loading: true, message: 'Processing request...' })
         await axios.post(`${import.meta.env.VITE_API_URL}/loan`, data)
             .then(async (res) => {
-                setLoading(true)
-                setStatus({ status: 'success', message: 'Itemed signed out successfully!' })
+                setStatus({ status: 'success', message: 'Itemed signed out successfully!', user: true })
+                setLoading((loading) => ({ ...loading, message: 'Sending email...' }))
                 return await axios.post(`${import.meta.env.VITE_API_URL}/loan/email`, res.data)
             })
             .then((res) => {
-                setLoading(false)
-                setStatus({ status: 'success', message: 'Confirmation email sent successfully!' })
+                setStatus((status) => ({ ...status, message: 'Confirmation email sent successfully!', user: false }))
             })
             .catch((err) => {
                 console.log(err)
-                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
-                setLoading(false)
+                setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}`, user: false })
             })
+            .finally(() => setLoading({ loading: false, message: '' }))
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -73,15 +73,15 @@ export default function Loan() {
                         </div>
                     )}
                 </div>
-                <input type="submit" className="btn btn-primary" disabled={loading} />
+                <input type="submit" className="btn btn-primary" disabled={loading.loading} />
             </form>
             {status.status === 'success' && (
-                <Success message={status.message} forUser={loading} />
+                <Success message={status.message} forUser={status.user} />
             )}
             {status.status === 'error' && (
                 <Error message={status.message} forUser={true} />
             )}
-            {loading && <Loading message={status.status === 'none' ? 'Processing request. This can take a minute.' : 'Email is sending...'} />}
+            {loading.loading && <Loading message={loading.message} />}
         </section>
     )
 }
