@@ -12,6 +12,11 @@ export default function Home() {
                 <p>We only lend to <span className="fw-bold">professors and graduate students</span> of the Department of Civil and Environmental Engineering. We <span className="fw-bold">do not lend to undergradute students</span>. If you are a staff member, we may be able to give you the item to take or you can place an order for it.</p>
             </div>
             <div className="my-5">
+                <h2>How to use</h2>
+                <p>To loan an item, select the "Loan an item" button and complete the form. Please use your uwaterloo email.</p>
+                <p>To return an item, select the "Return an item" button, find your corresponding name and item, and click "Return".</p>
+            </div>
+            <div className="my-5">
                 <h2>Items that we lend</h2>
                 <ul>
                     <li>Adapters (USB, HDMI, DVI, VGA, DisplayPort, etc)</li>
