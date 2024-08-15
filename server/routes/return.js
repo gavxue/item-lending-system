@@ -28,28 +28,18 @@ router.post('/', async (req, res, next) => {
 
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
-    const { data: data_log, error: error_log } = await supabase
+    const { data, error } = await supabase
         .from('log')
         .update({ date_return: date })
         .eq('id', id)
         .select()
-    if (error_log) {
-        console.log(error_log)
-        next(`DATABASE ERROR ${error_log.message}.`)
-        return
-    }
-    const { name, item, email } = data_log[0]
-
-    const { error } = await supabase
-        .from('current')
-        .delete()
-        .eq('ref', id)
     if (error) {
         console.log(error)
         next(`DATABASE ERROR ${error.message}.`)
         return
     }
-
+    const { name, item, email } = data[0]
+    
     res.send({ name: name, item: item, email: email, date: date })
 })
 
