@@ -27,7 +27,7 @@ export default function Admin() {
         fetchData()
     }, [])
 
-    const handleReminder = async (e: React.ChangeEvent<HTMLInputElement>, data: any) => {
+    const handleReminder = async (e: React.MouseEvent<HTMLButtonElement>, data: any) => {
         e.preventDefault()
         setStatus({ status: 'none', message: '' })
         setLoading({ loading: true, message: 'Sending reminder email...' })
@@ -73,7 +73,7 @@ export default function Admin() {
                     </thead>
                     <tbody>
                         {data.map((entry) => (
-                            <tr key={entry.id}>
+                            <tr key={entry.id}>git 
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.name}</th>
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.email}</th>
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.item}</th>
@@ -81,7 +81,7 @@ export default function Admin() {
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.date_return ? entry.date_return : '-'}</th>
                                 <th>
                                     {entry.date_return ? '' : (
-                                        <button className="btn btn-primary py-0" onClick={(e: React.FormEvent<HTMLInputElement>) => handleReminder(e, entry)}>Send</button>
+                                        <button className="btn btn-primary py-0" onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleReminder(e, entry)}>Send</button>
                                     )}
                                 </th>
                             </tr>

@@ -29,7 +29,7 @@ export default function Return() {
         fetchData()
     }, [])
 
-    const handleReturn = async (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const handleReturn = async (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault()
         setStatus({ status: 'none', message: '', user: true })
         setLoading({ loading: true, message: 'Processing request...' })
@@ -73,7 +73,7 @@ export default function Return() {
                                 <th className="fw-normal">{entry.item}</th>
                                 <th className="fw-normal">{entry.date_loan}</th>
                                 <th>
-                                    <button className="btn btn-primary py-0" onClick={(e: React.FormEvent<HTMLInputElement>) => handleReturn(e, entry.id)}>Return</button>
+                                    <button className="btn btn-primary py-0" onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleReturn(e, entry.id)}>Return</button>
                                 </th>
                             </tr>
                         ))}
