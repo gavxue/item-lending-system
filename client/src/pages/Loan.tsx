@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse, AxiosError } from 'axios'
 import { useState } from 'react'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,6 +8,8 @@ import Success from '../components/Success';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
 
+import { Status, LoadingStatus, FormData } from '../../types'
+
 const schema = yup.object({
     name: yup.string().required('Name is a required field.'),
     email: yup.string().email('Enter a valid email.').test('uwaterloo', 'Enter your uwaterloo email.',
@@ -16,22 +18,22 @@ const schema = yup.object({
 })
 
 export default function Loan() {
-    const [status, setStatus] = useState({ status: 'none', message: '', user: true })
-    const [loading, setLoading] = useState({ loading: false, message: '' })
+    const [status, setStatus] = useState<Status>({ status: 'none', message: '', user: true })
+    const [loading, setLoading] = useState<LoadingStatus>({ loading: false, message: '' })
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: FormData) => {
         setStatus({ status: 'none', message: '', user: true })
         setLoading({ loading: true, message: 'Processing request...' })
         await axios.post(`${import.meta.env.VITE_API_URL}/loan`, data)
-            .then(async (res) => {
+            .then(async (res: AxiosResponse) => {
                 setStatus({ status: 'success', message: 'Itemed signed out successfully!', user: true })
                 setLoading((loading) => ({ ...loading, message: 'Sending email...' }))
                 return await axios.post(`${import.meta.env.VITE_API_URL}/loan/email`, res.data)
             })
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 setStatus((status) => ({ ...status, message: 'Confirmation email sent successfully!', user: false }))
             })
-            .catch((err) => {
+            .catch((err: AxiosError) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}`, user: false })
             })

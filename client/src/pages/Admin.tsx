@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import axios, { AxiosResponse, AxiosError } from 'axios'
 
 import Error from '../components/Error'
 import Success from '../components/Success'
 import Loading from '../components/Loading'
 
+import { Status, LoadingStatus } from '../../types'
+
 export default function Admin() {
-    const [status, setStatus] = useState({ status: 'none', message: '' })
-    const [loading, setLoading] = useState({ loading: false, message: '' })
+    const [status, setStatus] = useState<Status>({ status: 'none', message: '' })
+    const [loading, setLoading] = useState<LoadingStatus>({ loading: false, message: '' })
     const [data, setData] = useState<any[]>()
 
     const fetchData = async () => {
         setLoading({ loading: true, message: 'Fetching data...' })
         await axios.get(`${import.meta.env.VITE_API_URL}/admin`)
-            .then((res) => setData(res.data))
-            .catch((err) => {
+            .then((res: AxiosResponse) => setData(res.data))
+            .catch((err: AxiosError) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
             })
@@ -25,15 +27,15 @@ export default function Admin() {
         fetchData()
     }, [])
 
-    const handleReminder = async (e: Event, data: any) => {
+    const handleReminder = async (e: React.ChangeEvent<HTMLInputElement>, data: any) => {
         e.preventDefault()
         setStatus({ status: 'none', message: '' })
         setLoading({ loading: true, message: 'Sending reminder email...' })
         await axios.post(`${import.meta.env.VITE_API_URL}/admin`, { ...data })
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 setStatus({ status: 'success', message: 'Reminder email sent successfully!' })
             })
-            .catch((err) => {
+            .catch((err: AxiosError) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}` })
             })
@@ -79,7 +81,7 @@ export default function Admin() {
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.date_return ? entry.date_return : '-'}</th>
                                 <th>
                                     {entry.date_return ? '' : (
-                                        <button className="btn btn-primary py-0" onClick={(e: any) => handleReminder(e, entry)}>Send</button>
+                                        <button className="btn btn-primary py-0" onClick={(e: React.FormEvent<HTMLInputElement>) => handleReminder(e, entry)}>Send</button>
                                     )}
                                 </th>
                             </tr>

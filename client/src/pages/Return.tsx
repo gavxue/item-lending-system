@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import axios, { AxiosResponse, AxiosError } from 'axios'
 
 import Error from '../components/Error'
 import Success from '../components/Success'
 import Loading from '../components/Loading'
 
+import { Status, LoadingStatus } from '../../types'
+
 export default function Return() {
-    const [status, setStatus] = useState({ status: 'none', message: '', user: true })
-    const [loading, setLoading] = useState({ loading: false, message: '' })
+    const [status, setStatus] = useState<Status>({ status: 'none', message: '', user: true })
+    const [loading, setLoading] = useState<LoadingStatus>({ loading: false, message: '' })
     const [data, setData] = useState<any[]>()
 
     const fetchData = async () => {
         setLoading({ loading: true, message: 'Fetching data...' })
         await axios.get(`${import.meta.env.VITE_API_URL}/return`)
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 setData(res.data)
             })
-            .catch((err) => {
+            .catch((err: AxiosError) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}`, user: true })
             })
@@ -27,24 +29,24 @@ export default function Return() {
         fetchData()
     }, [])
 
-    const handleReturn = async (e: Event, id: number) => {
+    const handleReturn = async (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
         e.preventDefault()
         setStatus({ status: 'none', message: '', user: true })
         setLoading({ loading: true, message: 'Processing request...' })
         await axios.post(`${import.meta.env.VITE_API_URL}/return`, { id: id })
-            .then(async (res) => {
+            .then(async (res: AxiosResponse) => {
                 setStatus({ status: 'success', message: 'Item returned successfully!', user: true })
                 await fetchData()
                 return res
             })
-            .then(async (res) => {
+            .then(async (res: AxiosResponse) => {
                 setLoading({ loading: true, message: 'Sending email...' })
                 return await axios.post(`${import.meta.env.VITE_API_URL}/return/email`, res.data)
             })
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 setStatus({ status: 'success', message: 'Confirmation email sent successfully!', user: false })
             })
-            .catch((err) => {
+            .catch((err: AxiosError) => {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}`, user: true })
             })
@@ -71,7 +73,7 @@ export default function Return() {
                                 <th className="fw-normal">{entry.item}</th>
                                 <th className="fw-normal">{entry.date_loan}</th>
                                 <th>
-                                    <button className="btn btn-primary py-0" onClick={(e: any) => handleReturn(e, entry.id)}>Return</button>
+                                    <button className="btn btn-primary py-0" onClick={(e: React.FormEvent<HTMLInputElement>) => handleReturn(e, entry.id)}>Return</button>
                                 </th>
                             </tr>
                         ))}

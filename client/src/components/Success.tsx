@@ -1,4 +1,6 @@
-export default function Success({ message, forUser }) {
+import { Alert } from "../../types";
+
+export default function Success({ message, forUser }: Alert) {
     return (
         <div className="alert alert-success my-3 pb-0" role="alert">
             <p className="fw-bold">Success</p>

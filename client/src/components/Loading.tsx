@@ -1,4 +1,6 @@
-export default function Loading({ message }) {
+import { Alert } from '../../types'
+
+export default function Loading({ message }: Alert) {
     return (
         <div className="alert alert-warning my-3 d-flex gap-3 align-items-center" role="alert">
             <div className="spinner-border" role="status">
