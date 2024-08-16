@@ -25,6 +25,6 @@ export interface Data {
     item: string,
     name: string,
     email: string,
-    date_load: string,
+    date_loan: string,
     date_return: string
 }

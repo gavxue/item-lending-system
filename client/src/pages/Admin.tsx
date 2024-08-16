@@ -73,7 +73,7 @@ export default function Admin() {
                     </thead>
                     <tbody>
                         {data.map((entry) => (
-                            <tr key={entry.id}>git 
+                            <tr key={entry.id}>
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.name}</th>
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.email}</th>
                                 <th className={`fw-normal ${entry.date_return ? "text-secondary" : ""}`}>{entry.item}</th>
