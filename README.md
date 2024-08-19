@@ -8,6 +8,7 @@ Deployment link cannot be provided publicly for security concerns.
 - React.js and Bootstrap for the frontend
 - Express.js for the backend
 - Supabase for cloud database storage
+- Cypress for end-to-end testing
 - Render for hosting
 
 ## Features
