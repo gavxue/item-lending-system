@@ -13,6 +13,7 @@ Deployment link cannot be provided publicly for security concerns.
 
 ## Features
 - sending email notifications through UWaterloo's SMTP mail server
+- uses Power Automate cloud flows to backup data from the database
 
 ## Images
 ![image](https://github.com/user-attachments/assets/4638fe32-b1ed-47f8-b8c3-dce27be8cf5e)
