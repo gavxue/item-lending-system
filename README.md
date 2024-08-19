@@ -1,4 +1,4 @@
-# Item Lending System
+# Item Lending System 🗂️
 
 An item lending system with basic CRUD functionality that I developed for the CEE IT team during my S24 co-op term.
 
