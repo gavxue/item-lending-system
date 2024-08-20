@@ -50,7 +50,10 @@ export default function Return() {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}`, user: true })
             })
-            .finally(() => setLoading({ loading: false, message: '' }))
+            .finally(() => {
+                setLoading({ loading: true, message: 'Redirecting to homepage in 10 seconds...' })
+                setTimeout(() => window.location.replace('/'), 10000)
+            })
     }
 
     return (

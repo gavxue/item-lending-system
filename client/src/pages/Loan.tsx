@@ -11,7 +11,8 @@ import Loading from '../components/Loading';
 import { Status, LoadingStatus, FormData } from '../../types'
 
 const schema = yup.object({
-    name: yup.string().required('Name is a required field.'),
+    name: yup.string().test('full name', 'Enter your full name.',
+        (value: string) => value.includes(' ')).required('Name is a required field.'),
     email: yup.string().email('Enter a valid email.').test('uwaterloo', 'Enter your uwaterloo email.',
         (value: string) => value.includes('@uwaterloo.ca')).required('Email is a required field.'),
     item: yup.string().required('Item is a required field.')
@@ -37,7 +38,10 @@ export default function Loan() {
                 console.log(err)
                 setStatus({ status: 'error', message: `${err.message}. ${err.response ? err.response.data : ''}`, user: false })
             })
-            .finally(() => setLoading({ loading: false, message: '' }))
+            .finally(() => {
+                setLoading({ loading: true, message: 'Redirecting to homepage in 10 seconds...' })
+                setTimeout(() => window.location.replace('/'), 10000)
+            })
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm({
