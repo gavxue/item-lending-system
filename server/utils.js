@@ -12,8 +12,9 @@ function sendEmail(email, subject, body) {
     })
 
     const mailOptions = {
-        from: 'ceecoop1@uwaterloo.ca',
+        from: `${process.env.EMAIL_USER}@uwaterloo.ca`,
         to: email,
+        replyTo: 'civrt@uwaterloo.ca',
         subject: subject,
         text: body
     }
